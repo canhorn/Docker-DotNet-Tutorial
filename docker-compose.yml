@@ -1,0 +1,31 @@
+version: '3'
+services:
+    web:
+        build: .
+        environment:
+            ASPNETCORE_ENVIRONMENT: Production
+        ports:
+            - '8080:80'
+        volumes:
+            - ./appsettings.Production.json:/app/appsettings.Production.json
+        depends_on:
+            - database
+
+    run_migration:
+        build: .
+        environment:
+            ASPNETCORE_ENVIRONMENT: Production
+        ports:
+            - '8080:80'
+        volumes:
+            - ./appsettings.Production.json:/app/appsettings.Production.json
+        depends_on:
+            - database
+
+    database:
+        image: mcr.microsoft.com/mssql/server:2017-CU8-ubuntu
+        environment:
+            ACCEPT_EULA: Y
+            SA_PASSWORD: "yourStrong(!)Password"
+        ports:
+            - '1433:1433'
